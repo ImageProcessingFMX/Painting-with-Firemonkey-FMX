@@ -27,59 +27,136 @@ object Form1: TForm1
   end
   object btn__draw_filledpolygon: TButton
     Position.X = 16.000000000000000000
-    Position.Y = 280.000000000000000000
-    Size.Width = 121.000000000000000000
-    Size.Height = 33.000000000000000000
+    Position.Y = 432.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
-    Text = 'btn__draw_filledpolygon'
+    Text = 'draw filledpolygon'
     OnClick = btn__draw_filledpolygonClick
   end
   object btn_draw_arc: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 104.000000000000000000
-    Size.Width = 121.000000000000000000
-    Size.Height = 22.000000000000000000
+    Position.X = 16.000000000000000000
+    Position.Y = 184.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 3
-    Text = 'btn_draw_arc'
+    Text = 'draw_arc'
     OnClick = btn_draw_arcClick
   end
   object btn_draw_ellipse: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 144.000000000000000000
-    Size.Width = 113.000000000000000000
-    Size.Height = 22.000000000000000000
+    Position.X = 16.000000000000000000
+    Position.Y = 232.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 4
-    Text = 'btn_draw_ellipse'
+    Text = 'draw ellipse'
     OnClick = btn_draw_ellipseClick
   end
   object btn_draw_lines: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 184.000000000000000000
-    Size.Width = 113.000000000000000000
-    Size.Height = 33.000000000000000000
+    Position.X = 16.000000000000000000
+    Position.Y = 344.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
-    Text = 'btn_draw_lines'
+    TabOrder = 9
+    Text = 'draw lines'
     OnClick = btn_draw_linesClick
   end
   object btn_draw_Polygon: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 232.000000000000000000
-    Size.Width = 113.000000000000000000
-    Size.Height = 33.000000000000000000
+    Position.X = 16.000000000000000000
+    Position.Y = 392.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
-    Text = 'btn_draw_Polygon'
+    TabOrder = 11
+    Text = 'draw polygon'
     OnClick = btn_draw_PolygonClick
   end
-  object btn_draw_clear: TButton
+  object clear_color: TButton
+    Position.X = 16.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 13
+    Text = 'clear_color'
+    OnClick = clear_colorClick
+  end
+  object trckbr_opacity: TTrackBar
+    CanParentFocus = True
+    Orientation = Horizontal
     Position.X = 24.000000000000000000
-    Position.Y = 56.000000000000000000
-    TabOrder = 10
-    Text = 'btn_draw_clear'
-    OnClick = btn_draw_clearClick
+    Position.Y = 688.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 14
+    OnChange = trckbr_opacityChange
+  end
+  object lbl_opacity: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 664.000000000000000000
+    Text = 'Opacity'
+    TabOrder = 15
+  end
+  object grp_Radio: TGroupBox
+    Position.X = 16.000000000000000000
+    Position.Y = 72.000000000000000000
+    Text = 'grp_Radio'
+    TabOrder = 16
+    object rb_blue: TRadioButton
+      Tag = 3
+      Position.X = 16.000000000000000000
+      Position.Y = 81.000000000000000000
+      TabOrder = 0
+      Text = 'rb_blue'
+    end
+    object rb_black: TRadioButton
+      Tag = 2
+      Position.X = 16.000000000000000000
+      Position.Y = 56.000000000000000000
+      TabOrder = 1
+      Text = 'rb_black'
+    end
+    object rb_white: TRadioButton
+      Tag = 1
+      Position.X = 16.000000000000000000
+      Position.Y = 32.000000000000000000
+      TabOrder = 2
+      Text = 'rb_white'
+    end
+  end
+  object btn_draw_circles: TButton
+    Position.X = 16.000000000000000000
+    Position.Y = 272.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    Text = 'draw circles'
+    OnClick = btn_draw_circlesClick
+  end
+  object btn_draw_rect: TButton
+    Position.X = 16.000000000000000000
+    Position.Y = 480.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Text = 'draw rect'
+    OnClick = btn_draw_rectClick
+  end
+  object btn_draw_datapath: TButton
+    Position.X = 16.000000000000000000
+    Position.Y = 528.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 35.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Text = 'draw rect'
+    OnClick = btn_draw_datapathClick
   end
 end
