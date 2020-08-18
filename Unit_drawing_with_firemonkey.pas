@@ -11,6 +11,13 @@ uses
   FMX.Controls.Presentation, FMX.StdCtrls, FMX.Objects, System.Math.Vectors;
 
 type
+  TRadioGroupHelper = class helper for TGroupBox
+    // Setzt voraus, dass die TAG-Werte der TRadioButton manuell zuvor auf 0..x durchnumeriert wurden
+    function ItemIndex: Integer;
+    procedure SetItemIndex(NewIndex: Integer);
+  end;
+
+type
   TForm1 = class(TForm)
     image1: TImage;
     rctngl_left1: TRectangle;
@@ -19,15 +26,28 @@ type
     btn_draw_ellipse: TButton;
     btn_draw_lines: TButton;
     btn_draw_Polygon: TButton;
-    btn_draw_clear: TButton;
+    clear_color: TButton;
+    trckbr_opacity: TTrackBar;
+    lbl_opacity: TLabel;
+    rb_blue: TRadioButton;
+    grp_Radio: TGroupBox;
+    rb_black: TRadioButton;
+    rb_white: TRadioButton;
+    btn_draw_circles: TButton;
+    btn_draw_rect: TButton;
+    btn_draw_datapath: TButton;
     procedure btn_draw_arcClick(Sender: TObject);
     procedure btn_draw_ellipseClick(Sender: TObject);
-    procedure btn_draw_linesClick(Sender: TObject);
+    procedure btn_draw_circlesClick(Sender: TObject);
     procedure btn_draw_PolygonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btn__draw_filledpolygonClick(Sender: TObject);
-    procedure btn_draw_clearClick(Sender: TObject);
+    procedure clear_colorClick(Sender: TObject);
+    procedure trckbr_opacityChange(Sender: TObject);
+    procedure btn_draw_linesClick(Sender: TObject);
+    procedure btn_draw_rectClick(Sender: TObject);
+    procedure btn_draw_datapathClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -48,6 +68,56 @@ var
 implementation
 
 {$R *.fmx}
+
+function TRadioGroupHelper.ItemIndex: Integer;
+var
+  L: Integer;
+begin
+  Result := -1;
+
+  for L := 0 to ChildrenCount - 1 do
+  begin
+    if Children[L] is TRadioButton then
+    begin
+      if (Children[L] as TRadioButton).IsChecked then
+      begin
+        Result := (Children[L] as TRadioButton).Tag;
+      end;
+    end;
+  end;
+end;
+
+procedure TRadioGroupHelper.SetItemIndex(NewIndex: Integer);
+var
+  L: Integer;
+begin
+  for L := 0 to ChildrenCount - 1 do
+  begin
+    if Children[L] is TRadioButton then
+    begin
+      if (Children[L] as TRadioButton).Tag = NewIndex then
+      begin
+        (Children[L] as TRadioButton).IsChecked := True;
+      end;
+    end;
+  end;
+end;
+
+function randomColor: TColor;
+var
+  rec: TAlphaColorRec;
+begin
+  with rec do
+  begin
+
+    A := random(255);
+    R := random(255);
+    G := random(255);
+    B := random(255);
+  end;
+
+  Result := rec.Color;
+end;
 
 procedure TForm1.MakeRandomPolygons(Sender: TObject);
 var
@@ -79,6 +149,13 @@ begin
 
 end;
 
+procedure TForm1.trckbr_opacityChange(Sender: TObject);
+begin
+  FOpacity := trckbr_opacity.Value;
+
+  lbl_opacity.Text := 'opacity:' + FloatToStr(FOpacity);
+end;
+
 procedure TForm1.LoadBMP2GUI(Sender: TObject);
 var
   p1, p2, p3, p4, p5: TPointF;
@@ -100,7 +177,7 @@ begin
 
   localBMP.Canvas.BeginScene;
   // draws the arc on the canvas
-  localBMP.Canvas.DrawArc(p1, p2, 90, 230, 20);
+  localBMP.Canvas.DrawArc(p1, p2, 90, 230, FOpacity);
   // updates the bitmap to show the arc
   localBMP.Canvas.EndScene;
   // Image1.Bitmap.BitmapChanged;
@@ -117,7 +194,7 @@ begin
   MyRect := TRectF.Create(50, 40, 200, 270);
   // draws the ellipse om the canvas
   localBMP.Canvas.BeginScene;
-  localBMP.Canvas.DrawEllipse(MyRect, 40);
+  localBMP.Canvas.DrawEllipse(MyRect, FOpacity);
   localBMP.Canvas.EndScene;
   // updates the bitmap
   // Image1.Bitmap.BitmapChanged;
@@ -126,31 +203,13 @@ begin
 
 end;
 
-function randomColor: TColor;
-var
-  rec: TAlphaColorRec;
-begin
-  with rec do
-  begin
-
-    A := Random(255);
-    R := Random(255);
-    G := Random(255);
-    B := Random(255);
-  end;
-
-  Result := rec.Color;
-end;
-
 procedure TForm1.btn_draw_linesClick(Sender: TObject);
 var
   p1, p2: TPointF;
   i, j: Integer;
   Brush: TStrokeBrush;
-
 begin
-
-  for i := 1 to 100 do
+      for i := 1 to 100 do
   begin
 
     Brush := TStrokeBrush.Create(TBrushKind.Solid, randomColor);
@@ -171,12 +230,106 @@ begin
 
     Brush.Free;
 
-  end;
+  end
 end;
 
-procedure TForm1.btn_draw_clearClick(Sender: TObject);
+
+
+procedure TForm1.btn_draw_circlesClick(Sender: TObject);
+var
+  p1, p2: TPointF;
+  i, j: Integer;
+  Brush: TStrokeBrush;
+   MyRect: TRectF;
 begin
-  localBMP.Canvas.Clear(clablack);
+
+ ///  5 circles
+ ///
+
+    localBMP.Canvas.BeginScene;
+
+
+   MyRect := TRectF.Create(25, 100, 125, 200);
+  // draws the ellipse om the canvas
+  localBMP.Canvas.DrawEllipse(MyRect, FOpacity);
+   localBMP.Canvas.Stroke.Color := Randomcolor;
+
+
+      MyRect := TRectF.Create(150, 100, 250, 200);
+  // draws the ellipse om the canvas
+  localBMP.Canvas.DrawEllipse(MyRect, FOpacity);
+   localBMP.Canvas.Stroke.Color := Randomcolor;
+
+
+
+         MyRect := TRectF.Create(275, 100, 375, 200);
+  // draws the ellipse om the canvas
+  localBMP.Canvas.DrawEllipse(MyRect, FOpacity);
+   localBMP.Canvas.Stroke.Color := Randomcolor;
+
+
+      MyRect := TRectF.Create(75, 150, 175, 250);
+  // draws the ellipse om the canvas
+  localBMP.Canvas.DrawEllipse(MyRect, FOpacity);
+   localBMP.Canvas.Stroke.Color := Randomcolor;
+
+
+         MyRect := TRectF.Create(200, 150, 300, 250);
+  // draws the ellipse om the canvas
+  localBMP.Canvas.DrawEllipse(MyRect, FOpacity);
+   localBMP.Canvas.Stroke.Color := Randomcolor;
+
+
+  localBMP.Canvas.EndScene;
+  // updates the bitmap
+  // Image1.Bitmap.BitmapChanged;
+
+  LoadBMP2GUI(nil);
+end;
+
+
+
+
+
+
+
+
+
+procedure TForm1.btn_draw_datapathClick(Sender: TObject);
+var
+  path: TPathData;
+  MyRect1, MyRect2: TRectF;
+begin
+  // set the circumscribed rectangle of the ellipse to be add in the path
+  MyRect1 := TRectF.Create(90, 100, 230, 300);
+  /// sets the rectangle to be add in the path
+  MyRect2 := TRectF.Create(70, 90, 220, 290);
+  // initializes and creates the path to be drawn
+  path := TPathData.Create;
+  path.AddEllipse(MyRect1);
+  path.AddRectangle(MyRect2, 0, 0, AllCorners);
+  localBMP.Canvas.BeginScene;
+  // draws the path on the canvas
+  localBMP.Canvas.DrawPath(path, 200);
+  localBMP.Canvas.EndScene;
+      LoadBMP2GUI(nil);
+
+end;
+
+
+procedure TForm1.clear_colorClick(Sender: TObject);
+begin
+
+  case grp_Radio.ItemIndex of
+    1:
+      localBMP.Canvas.Clear(clawhite);
+    2:
+      localBMP.Canvas.Clear(clablack);
+    3:
+      localBMP.Canvas.Clear(clablue);
+  else
+    localBMP.Canvas.Clear(clawhite);
+  end;
 
   LoadBMP2GUI(nil);
 end;
@@ -201,7 +354,7 @@ begin
 
     localBMP.Canvas.BeginScene;
     // draws the polygon on the canvas
-    localBMP.Canvas.DrawPolygon(MyPolygon, 50);
+    localBMP.Canvas.DrawPolygon(MyPolygon, FOpacity);
     localBMP.Canvas.EndScene;
     // updates the bitmap
     // Image1.Bitmap.BitmapChanged;
@@ -212,14 +365,32 @@ begin
   end;
 end;
 
+procedure TForm1.btn_draw_rectClick(Sender: TObject);
+begin
+     ///
+     ///
+     ///
+      localBMP.Canvas.BeginScene;
+       localBMP.Canvas.Stroke.Color := claBlue;
+  localBMP.Canvas.Stroke.Kind:= TBrushKind.bkSolid;
+  localBMP.Canvas.DrawRect(RectF(0,0,50,50),0,0,AllCorners,1);
+
+      localBMP.Canvas.EndScene;
+    // updates the bitmap
+    // Image1.Bitmap.BitmapChanged;
+
+    LoadBMP2GUI(nil);
+
+
+
+end;
+
 procedure TForm1.btn__draw_filledpolygonClick(Sender: TObject);
 var
   i: Integer;
   MyPolygon: TPolygon;
   Brush: TBrush;
 begin
-  // sets the ends of the line to be drawed
-  FOpacity := 50;
 
   Brush := TBrush.Create(TBrushKind.Solid, TAlphaColors.red);
 
@@ -257,6 +428,10 @@ begin
   LoadBMP2GUI(nil);
 
   MakeRandomPolygons(nil);
+
+  FOpacity := 50;
+  trckbr_opacity.Value := FOpacity;
+
 end;
 
 end.
